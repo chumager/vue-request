@@ -1,7 +1,6 @@
 {
   "name": "vue_request",
   "version": "0.1.0",
-  "private": false,
   "scripts": {
     "build": "bili"
   },
@@ -52,16 +51,10 @@
       "parser": "babel-eslint"
     }
   },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions"
   ],
-  "peerDependencies": {},
   "installConfig": {
     "pnp": true
   }
