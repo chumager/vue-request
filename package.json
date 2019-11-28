@@ -1,0 +1,64 @@
+{
+  "name": "vue_request",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "build": "bili"
+  },
+  "main": "src/vue-request.js",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@vue/cli-service": "^3.8.4",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "bili": "^4.8.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.2",
+    "lodash.merge": "^4.6.1",
+    "rollup-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/prettier"
+    ],
+    "rules": {
+      "no-console": 0,
+      "max-len": [
+        "error",
+        {
+          "code": 120,
+          "ignoreComments": true
+        }
+      ],
+      "prettier/prettier": [
+        "warn",
+        {
+          "printWidth": 120,
+          "tabWidth": 2,
+          "bracketSpacing": false
+        }
+      ]
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "peerDependencies": {}
+}
