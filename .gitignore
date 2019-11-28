@@ -63,3 +63,6 @@ typings/
 
 # vim swap
 *.sw*
+
+
+vue.config.*
