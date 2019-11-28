@@ -1,5 +1,5 @@
 {
-  "name": "vue_request",
+  "name": "@chumager/vue_request",
   "version": "1.0.0",
   "scripts": {
     "build": "bili"
