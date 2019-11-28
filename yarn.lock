@@ -922,6 +922,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chumager/vue_request@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@chumager/vue_request@workspace:."
+  dependencies:
+    "@vue/cli-service": "npm:^3.8.4"
+    "@vue/eslint-config-prettier": "npm:^4.0.1"
+    bili: "npm:^4.8.0"
+    eslint: "npm:^5.16.0"
+    eslint-plugin-vue: "npm:^5.2.2"
+    lodash.merge: "npm:^4.6.1"
+    postcss: "npm:^7.0.23"
+    rollup-plugin-vue: "npm:^5.0.0"
+    vue-template-compiler: "npm:^2.6.10"
+  languageName: unknown
+  linkType: soft
+
 "@hapi/address@npm:2.x.x":
   version: 2.0.0
   resolution: "@hapi/address@npm:2.0.0"
@@ -10805,22 +10821,6 @@ __metadata:
   checksum: 390e2fe2159c12724ac20c388523218fbfd4683d1f07f66a4d2b2170ebe0a2b4ed55114dcd12f13d541f67a39950edbcfdf3f54ad1e0313b5071e1774c066b30
   languageName: node
   linkType: hard
-
-"vue_request@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "vue_request@workspace:."
-  dependencies:
-    "@vue/cli-service": "npm:^3.8.4"
-    "@vue/eslint-config-prettier": "npm:^4.0.1"
-    bili: "npm:^4.8.0"
-    eslint: "npm:^5.16.0"
-    eslint-plugin-vue: "npm:^5.2.2"
-    lodash.merge: "npm:^4.6.1"
-    postcss: "npm:^7.0.23"
-    rollup-plugin-vue: "npm:^5.0.0"
-    vue-template-compiler: "npm:^2.6.10"
-  languageName: unknown
-  linkType: soft
 
 "watchpack@npm:^1.5.0":
   version: 1.6.0
