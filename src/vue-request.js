@@ -26,15 +26,16 @@ export default {
         },
         fallBackText:
           "Hubo un problema al comunicarse con el servicio, por favor revise su conexión o reintente más tarde",
-        fallBackTimeOut: 15000
+        fallBackTimeOut: 15000,
+        request: [],
+        response: []
       },
       options
     );
-    let {axios, axiosDefaults} = myOptions;
-    let {fallBack} = myOptions;
+    const {axios, axiosDefaults, fallBack, componentName} = myOptions;
 
     //restricciones para detenerse
-    if (!axios) throw new Error("This plugins needs a axios instance assigned as 'axios'");
+    if (!axios) throw new Error("This plugins needs an axios instance assigned as 'axios'");
 
     //asignaciones por omisión.
     if (myOptions.withXHR) axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -50,10 +51,10 @@ export default {
     };
 
     //definición de componente
-    if (myOptions.componentName) {
-      Vue.component(myOptions.componentName, () => {
+    if (componentName) {
+      Vue.component(componentName, () => {
         return Promise.resolve({
-          name: myOptions.componentName,
+          name: componentName,
           props: {
             transition: {
               type: String,
@@ -155,6 +156,13 @@ export default {
       response.body = response.data;
       return response;
     }, retry);
+    myOptions.request.forEach(request =>
+      axios.interceptors.request.use[Array.isArray(request) ? "apply" : "call"](axios, request)
+    );
+    myOptions.response.forEach(response =>
+      axios.interceptors.response.use[Array.isArray(response) ? "apply" : "call"](axios, response)
+    );
+
     Vue.prototype.$http = axios;
   }
 };

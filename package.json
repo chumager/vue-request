@@ -1,21 +1,24 @@
 {
-  "name": "@chumager/vue_request",
-  "version": "1.0.0",
+  "name": "@chumager/vue-request",
+  "version": "1.0.4",
   "scripts": {
     "build": "bili"
   },
-  "main": "src/vue-request.js",
+  "main": "dist/vue-request.js",
   "files": [
     "dist"
   ],
   "devDependencies": {
     "@vue/cli-service": "^3.8.4",
     "@vue/eslint-config-prettier": "^4.0.1",
+    "babel-eslint": "^10.1.0",
     "bili": "^4.8.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^5.2.2",
     "lodash.merge": "^4.6.1",
     "postcss": "^7.0.23",
+    "prettier": "^1.19.1",
     "rollup-plugin-vue": "^5.0.0",
     "vue-template-compiler": "^2.6.10"
   },
