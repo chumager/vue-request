@@ -1,6 +1,6 @@
 {
   "name": "@chumager/vue-request",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "scripts": {
     "build": "bili"
   },
@@ -9,28 +9,33 @@
     "dist"
   ],
   "devDependencies": {
-    "@vue/cli-service": "^3.8.4",
-    "@vue/eslint-config-prettier": "^4.0.1",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@vue/babel-preset-app": "^4.2.3",
+    "@yarnpkg/pnpify": "^2.0.0-rc.19",
     "babel-eslint": "^10.1.0",
     "bili": "^4.8.0",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-vue": "^5.2.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-debug": "^4.0.0",
+    "gulp-terser": "^1.2.0",
     "lodash.merge": "^4.6.1",
-    "postcss": "^7.0.23",
-    "prettier": "^1.19.1",
-    "rollup-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "prettier": "^1.19.1"
   },
   "eslintConfig": {
     "root": true,
     "env": {
       "node": true,
-      "es6": true
+      "es6": true,
+      "browser": true
     },
     "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier"
+      "eslint:recommended"
+    ],
+    "plugins": [
+      "prettier"
     ],
     "rules": {
       "no-console": 0,
@@ -51,14 +56,27 @@
       ]
     },
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "babel-eslint",
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
     }
+  },
+  "installConfig": {
+    "pnp": true
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
+    "last 2 versions",
+    "not ie <= 8"
   ],
-  "installConfig": {
-    "pnp": true
+  "dependenciesMeta": {
+    "bili": {
+      "unplugged": true
+    },
+    "eslint": {
+      "unplugged": true
+    }
   }
 }

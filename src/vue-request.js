@@ -1,5 +1,3 @@
-"use strict";
-//import throttle from "lodash.throttle";
 import merge from "lodash.merge";
 export default {
   /**
@@ -145,7 +143,6 @@ export default {
     //interceptores
     axios.interceptors.request.use(config => {
       if (!config.noBlock) {
-        //console.log("Blocking", config);
         start();
       }
       config.try = config.try || 1;
