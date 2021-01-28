@@ -1,6 +1,6 @@
 {
   "name": "@chumager/vue-request",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Juan Carlos Muñoz <jcmunoz@itdmovil.cl>",
   "license": "MIT",
   "bugs": {
@@ -9,7 +9,8 @@
   "homepage": "https://github.com/chumager/vue-request",
   "main": "dist/vue-request.js",
   "files": [
-    "dist"
+    "dist",
+    "css"
   ],
   "devDependencies": {
     "gulp": "^4.0.2",
