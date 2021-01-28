@@ -1,82 +1,22 @@
 {
   "name": "@chumager/vue-request",
-  "version": "1.0.5",
-  "scripts": {
-    "build": "bili"
+  "version": "1.0.6",
+  "author": "Juan Carlos Muñoz <jcmunoz@itdmovil.cl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chumager/vue-request/issues"
   },
+  "homepage": "https://github.com/chumager/vue-request",
   "main": "dist/vue-request.js",
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.7",
-    "@vue/babel-preset-app": "^4.2.3",
-    "@yarnpkg/pnpify": "^2.0.0-rc.19",
-    "babel-eslint": "^10.1.0",
-    "bili": "^4.8.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-prettier": "^3.1.2",
     "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
     "gulp-debug": "^4.0.0",
-    "gulp-terser": "^1.2.0",
-    "lodash.merge": "^4.6.1",
-    "prettier": "^1.19.1"
+    "gulp-terser": "^2.0.1"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true,
-      "es6": true,
-      "browser": true
-    },
-    "extends": [
-      "eslint:recommended"
-    ],
-    "plugins": [
-      "prettier"
-    ],
-    "rules": {
-      "no-console": 0,
-      "max-len": [
-        "error",
-        {
-          "code": 120,
-          "ignoreComments": true
-        }
-      ],
-      "prettier/prettier": [
-        "warn",
-        {
-          "printWidth": 120,
-          "tabWidth": 2,
-          "bracketSpacing": false
-        }
-      ]
-    },
-    "parserOptions": {
-      "parser": "babel-eslint",
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    }
-  },
-  "installConfig": {
-    "pnp": true
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
-  "dependenciesMeta": {
-    "bili": {
-      "unplugged": true
-    },
-    "eslint": {
-      "unplugged": true
-    }
+  "dependencies": {
+    "lodash.merge": "^4.6.2"
   }
 }
