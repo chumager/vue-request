@@ -47,12 +47,10 @@ export default {
     //estado
     //definimos el objeto de interacción.
     const start = state => {
-      console.log("start", state);
       state.loading = true;
       state.loadCount++;
     };
     const stop = state => {
-      console.log("stop");
       state.loadCount--;
       if (state.loadCount <= 0) {
         state.loadCount = 0;
@@ -80,13 +78,13 @@ export default {
           start,
           stop,
           configSet(state, {key, config}) {
-            state.config.set(key, config);
+            state.configs.set(key, config);
           },
           configGet(state, key) {
-            return state.config.get(key);
+            return state.configs.get(key);
           },
           configDel(state, key) {
-            return state.config.del(key);
+            return state.configs.del(key);
           },
           lock(state, val) {
             state.lock = val;
@@ -125,25 +123,29 @@ export default {
       }));
     }
     //helper retry
-    const retry = error => {
-      console.log("retry", error);
+    const retry = async error => {
       const {config, response} = error;
       config.try++;
       config.timeout *= config.timeoutFactor;
       if (!config.noBlock) {
         store ? store.commit(`${localStoreName}/stop`) : stop(state);
       }
-      //hay respuesta del servidor, evaluar si hay algun trap para el estado.
+      //hay respuesta del servidor, evaluar si hay algún trap para el estado.
       if (response) {
         response.body = response.data;
+        //se evalua si hay trap para el estado
         if (`${response.status}` in localOptions.status) {
+          //si el trap es "retry" simplemente se reintenta
           if (localOptions.status[`${response.status}`] === "retry") {
             if (config.try <= config.retry) {
               return axios(config);
             }
-          } else return localOptions.status[response.status](config, response);
+            //si no es "retry" se evalua que sea función
+          } else if (typeof localOptions.status[response.status] === "function")
+            return localOptions.status[response.status].call(axios, config, response);
+          else throw new Error(`Trap for ${response.status} is neither "retry" nor function`);
         }
-        return Promise.reject(error);
+        throw error;
       }
       //no hay respuesta, se cayó por error de red o timeout
       if (config.try <= config.retry) {
@@ -151,9 +153,8 @@ export default {
         return axios(config);
       }
       //ya pasó los reintentos, se bloquea el fallback y se ejecuta
-      //
-      //se ingresa la configuración al Set.
       config.try = 1;
+      //se ingresa la configuración al Set y se espera que se resuelva para entregar el resultado
       let result = new Promise((res /*, rej*/) => {
         const {url, method, params, body} = config;
         let key = `${url}${method}${JSON.stringify(params)}${JSON.stringify(body)}`;
@@ -162,17 +163,19 @@ export default {
           res(ev);
         });
       });
+      //Si no está bloqueado se bloquea para evitar mostrar más de una advertencia
       if (!(store ? store.state[localStoreName].lock : state.lock)) {
         store ? store.commit(`${localStoreName}/lock`, true) : (state.lock = true);
-        Promise.resolve(fallBack(error)).then(() => {
-          store ? store.commit(`${localStoreName}/lock`, false) : (state.lock = false);
-          let {configs} = store ? store.state[localStoreName] : state;
-          configs.forEach((config, key) => {
-            axios(config).then(result => {
-              store ? store.commit(`${localStoreName}/configDel`, key) : state.configs.delete(key);
-              event.$emit(key, result);
-            });
-          });
+        //Se ejecuta el fallback;
+        await fallBack(error);
+        store ? store.commit(`${localStoreName}/lock`, false) : (state.lock = false);
+        let {configs} = store ? store.state[localStoreName] : state;
+        //se recorren todos los request y se vuelven a ejecutar y se emite el resultado,
+        //acorde con el bloque anterior
+        configs.forEach(async (config, key) => {
+          const result = await axios(config);
+          store ? store.commit(`${localStoreName}/configDel`, key) : state.configs.delete(key);
+          event.$emit(key, result);
         });
       }
       return result;
@@ -198,5 +201,6 @@ export default {
     );
 
     Vue.prototype.$http = axios;
+    Vue.$http = axios;
   }
 };
