@@ -84,7 +84,7 @@ export default {
             return state.configs.get(key);
           },
           configDel(state, key) {
-            return state.configs.del(key);
+            return state.configs.delete(key);
           },
           lock(state, val) {
             state.lock = val;
