@@ -13,9 +13,12 @@
     "css"
   ],
   "devDependencies": {
+    "eslint": "^8.46.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "gulp": "^4.0.2",
     "gulp-debug": "^4.0.0",
-    "gulp-terser": "^2.0.1"
+    "gulp-terser": "^2.0.1",
+    "prettier": "^3.0.1"
   },
   "dependencies": {
     "lodash.merge": "^4.6.2"
