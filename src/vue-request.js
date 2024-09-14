@@ -1,10 +1,11 @@
 import merge from "lodash.merge";
+import mitt from "mitt";
 export default {
   /**
    * Instalador
    * @param {Object} Vue la instancia sobre la cual se va a instalar
    */
-  install(Vue, options) {
+  install(App, options) {
     const localOptions = merge(
       {},
       {
@@ -34,7 +35,6 @@ export default {
       },
       options
     );
-    console.log("vue-request start");
     const {axios, axiosDefaults, fallBack, componentName, store, storeName} = localOptions;
 
     //restricciones para detenerse
@@ -63,10 +63,10 @@ export default {
       block: false,
       configs: new Map()
     };
-    const event = new Vue();
+    const event = mitt();
     const localStoreName = storeName || "request";
     if (store) {
-      console.log("tengo store");
+      //console.log("tengo store");
       if (store.hasModule(localStoreName))
         throw new Error(
           `vue-request has store but "${localStoreName}" already exists, plase change storeName in options`
@@ -94,7 +94,7 @@ export default {
     }
     //definición de componente
     if (componentName) {
-      Vue.component(componentName, async () => ({
+      App.component(componentName, async () => ({
         name: componentName,
         props: {
           transition: {
@@ -159,7 +159,7 @@ export default {
         const {url, method, params, body} = config;
         let key = `${url}${method}${JSON.stringify(params)}${JSON.stringify(body)}`;
         store ? store.commit(`${localStoreName}/configSet`, {key, config}) : state.configs.set(key, config);
-        event.$once(key, ev => {
+        event.once(key, ev => {
           res(ev);
         });
       });
@@ -175,7 +175,7 @@ export default {
         configs.forEach(async (config, key) => {
           const result = await axios(config);
           store ? store.commit(`${localStoreName}/configDel`, key) : state.configs.delete(key);
-          event.$emit(key, result);
+          event.emit(key, result);
         });
       }
       return result;
@@ -188,6 +188,17 @@ export default {
       config.try = config.try || 1;
       return config;
     });
+    //asignamos el locale
+    axios.interceptors.request.use(config => {
+      const locale = store?.getters?.["Config/getLocale"];
+      //console.log("REQUEST locale", locale);
+      if (locale) {
+        config.headers = {...config.headers, "X-Locale": locale};
+      }
+      //console.log("REQUEST headers", config.headers);
+      return config;
+    });
+
     axios.interceptors.response.use(response => {
       store ? store.commit(`${localStoreName}/stop`) : stop(state);
       response.body = response.data;
@@ -199,8 +210,7 @@ export default {
     localOptions.response.forEach(response =>
       axios.interceptors.response.use[Array.isArray(response) ? "apply" : "call"](axios, response)
     );
-
-    Vue.prototype.$http = axios;
-    Vue.$http = axios;
+    App.config.globalProperties.$http = axios;
+    //Vue.$http = axios;
   }
 };
