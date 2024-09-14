@@ -1,30 +1,52 @@
-"use strict";
-const {src, dest, parallel, watch: w} = require("gulp");
-const terser = require("gulp-terser");
-const debug = require("gulp-debug");
+import gulp from "gulp";
+const {src, dest, parallel, watch: w} = gulp;
+/*
+ *const gt = require("gulp-terser");
+ *const terser = require("terser");
+ */
+//import gobf from "gulp-javascript-obfuscator";
+import gt from "gulp-terser";
+import {minify} from "terser";
+import debug from "gulp-debug";
+import stripDebug from "gulp-strip-debug";
+import {deleteSync} from "del";
+import path from "path";
 
-const path = ["src/**/*.js"];
-function js(localPath) {
-  if (typeof localPath === "function") return;
-  return src(localPath || path, {base: "src"})
-    .pipe(debug())
-    .pipe(
-      terser({
-        compress: {
-          drop_console: true,
-          module: true,
-          keep_fnames: false
-        }
-      })
-    )
-    .pipe(dest("dist/"));
+//const path = ["**/*.js", "!dist/**/*", "!itdfw*.js", "!gulpfile.js", "!.pnp", "!ecosystem,config.js"];
+const searchPath = ["src/**/*.js"];
+function js() {
+  return (
+    src(searchPath, {base: "src"})
+      .pipe(debug({title: "Ofuscando" /*, logger: Log*/}))
+      //.pipe(gif(cond, gt({}, terser.minify)))
+      //.pipe(stripDebug())
+      .pipe(gt({}, minify))
+      //.pipe(gobf({compact: true /*, controlFlowFlattening: true*/}))
+      .pipe(dest("dist/"))
+  );
+}
+function obfuscate(path) {
+  return (
+    src(path, {base: "src"})
+      .pipe(debug({title: "Ofuscando" /*, logger: Log*/}))
+      //.pipe(gif(cond, gt({}, terser.minify)))
+      //.pipe(stripDebug())
+      .pipe(gt({}, minify))
+      //.pipe(gobf({compact: true /*, controlFlowFlattening: true*/}))
+      .pipe(dest("dist/"))
+  );
 }
 function watch() {
-  const watcher = w(path);
-  watcher.on("change", js);
-  watcher.on("add", js);
+  const watcher = w(searchPath);
+  watcher.on("change", obfuscate);
+  watcher.on("add", obfuscate);
+  watcher.on("unlink", filePath => {
+    const filePathFromSrc = path.relative(path.resolve("src"), filePath);
+    const destFilePath = path.resolve("dist", filePathFromSrc);
+    console.log("Eliminando", destFilePath);
+    deleteSync(destFilePath);
+  });
   return watcher;
 }
-exports.watch = watch;
-exports.js = js;
-exports.default = parallel(js, watch);
+export {watch, js};
+export default parallel(js, watch);
